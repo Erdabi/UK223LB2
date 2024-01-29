@@ -1,6 +1,6 @@
 import mariadb from 'mariadb';
 import { Pool } from 'mariadb';
-import { USER_TABLE, TWEET_TABLE, POST_TABLE } from './schema';
+import { USER_TABLE, POST_TABLE } from './schema';
 
 export class Database {
   private _pool: Pool;
@@ -23,13 +23,6 @@ export class Database {
     console.log("User-Tabelle wurde erstellt oder existiert bereits.");
     }catch (err){
       console.error("Fehler beim Erstellen der User-Tabelle:", err);
-    }
-
-    try {
-    await this.executeSQL(TWEET_TABLE);
-    console.log("Tweet-Tabelle wurde erstellt oder existiert bereits.");
-    }catch (err){
-      console.error("Fehler beim Erstellen der Tweet-Tabelle:", err);
     }
 
     try {
