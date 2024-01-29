@@ -28,8 +28,13 @@ const sendLoginRequest = (username, password) => {
     },
     body: JSON.stringify({ username, password })
   })
-  .then(response => response.text())
-  .then(data => console.log(data))
+  .then(response => {
+    if (response.ok) {
+      window.location.href = '/twitter.html'; // Weiterleitung zur Twitter-Seite
+    } else {
+      throw new Error('Login fehlgeschlagen');
+    }
+  })
   .catch(error => console.error('Fehler bei der Anfrage:', error));
 };
 

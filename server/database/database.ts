@@ -1,6 +1,6 @@
 import mariadb from 'mariadb';
 import { Pool } from 'mariadb';
-import { USER_TABLE, TWEET_TABLE } from './schema';
+import { USER_TABLE, TWEET_TABLE, POST_TABLE } from './schema';
 
 export class Database {
   private _pool: Pool;
@@ -18,8 +18,26 @@ export class Database {
 
   private initializeDBSchema = async () => {
     console.log('Initializing DB schema...');
+    try {
     await this.executeSQL(USER_TABLE);
+    console.log("User-Tabelle wurde erstellt oder existiert bereits.");
+    }catch (err){
+      console.error("Fehler beim Erstellen der User-Tabelle:", err);
+    }
+
+    try {
     await this.executeSQL(TWEET_TABLE);
+    console.log("Tweet-Tabelle wurde erstellt oder existiert bereits.");
+    }catch (err){
+      console.error("Fehler beim Erstellen der Tweet-Tabelle:", err);
+    }
+
+    try {
+      await this.executeSQL(POST_TABLE);
+      console.log("Posts-Tabelle wurde erstellt oder existiert bereits.");
+  } catch (err) {
+      console.error("Fehler beim Erstellen der Posts-Tabelle:", err);
+  }
   }
 
   public executeSQL = async (query: string, params?: any[]) => {
@@ -55,4 +73,28 @@ export class Database {
       return null;
     }
   }
+
+  public addPost = async (text: string): Promise<any> => {
+    const query = `INSERT INTO posts (text) VALUES (?)`;
+    try {
+        const res = await this.executeSQL(query, [text]);
+        return res;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+public getPosts = async (): Promise<any> => {
+  const query = `SELECT * FROM posts`;
+  try {
+      const res = await this.executeSQL(query);
+      return res;
+  } catch (err) {
+      console.error('Fehler beim Abrufen der Posts:', err);
+      throw err;
+  }
+}
+
+
 }

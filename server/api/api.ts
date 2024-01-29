@@ -13,6 +13,8 @@ export class API {
     this.app.get('/hello', this.sayHello);
     this.app.post('/login', this.login.bind(this));
     this.app.post('/register', this.register.bind(this));
+    this.app.post('/addPost', this.addPost.bind(this));
+    this.app.get('/getPosts', this.getPosts.bind(this));
   }
 
   private sayHello(req: Request, res: Response) {
@@ -39,4 +41,25 @@ export class API {
       res.send('Registrierung erfolgreich!');
     }
   }
+
+  private async addPost(req: Request, res: Response) {
+    const { text } = req.body;
+    try {
+        await this.database.addPost(text);
+        res.status(200).send('Post erfolgreich hinzugefügt.');
+    } catch (err) {
+        res.status(500).send('Fehler beim Hinzufügen des Posts.');
+    }
 }
+
+private async getPosts(req: Request, res: Response) {
+  try {
+    const posts = await this.database.getPosts();
+    res.json(posts);
+  } catch (err) {
+    console.error('Fehler beim Abrufen der Posts:', err);
+    res.status(500).send('Serverfehler beim Abrufen der Posts.');
+  }
+}
+}
+

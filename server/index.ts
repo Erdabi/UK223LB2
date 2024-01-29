@@ -27,7 +27,7 @@ class Backend {
   }
 
   private setupMiddlewares(): void {
-    this._app.use(express.json()); // Wichtig für das Parsen von JSON Body-Anfragen
+    this._app.use(express.json());
   }
 
   private setupStaticFiles(): void {
@@ -40,8 +40,7 @@ class Backend {
       res.sendFile(__dirname + '/client/index.html');
     });
 
-    // Hinweis: Weitere Routen werden über die API-Klasse definiert
-  }
+   }
 
   private startServer(): void {
     const port = process.env.PORT || 3000;
