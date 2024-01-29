@@ -62,4 +62,3 @@ private async getPosts(req: Request, res: Response) {
   }
 }
 }
-
